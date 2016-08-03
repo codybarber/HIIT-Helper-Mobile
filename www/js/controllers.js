@@ -10,15 +10,19 @@ angular.module('starter.controllers', [])
   SC.stream('/tracks/198478194').then(function(player) {
     sounds.play = function() {
       player.play();
+      console.log(player);
+      console.log(player.streamInfo);
     };
     sounds.stop = function() {
       player.pause();
     };
     sounds.raiseVol = function() {
       player.setVolume(0.9);
+      console.log("raise");
     };
     sounds.lowerVol = function() {
-      player.setVolume(0.02);
+      player.setVolume(0.04);
+      console.log("lower");
     };
 
   });
@@ -27,9 +31,9 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('DashCtrl', function($scope, soundcloud) {
+.controller('DashCtrl', function($scope, soundcloud, $cordovaMedia) {
+  var media = $cordovaMedia.newMedia();
   var amount = 0;
-
     $('.intervals').submit(function(event) {
       event.preventDefault();
       state = 'on';
@@ -103,6 +107,7 @@ angular.module('starter.controllers', [])
           setTimeout(function() {
             // turn down volume
             soundcloud.lowerVol();
+            media.setVolume(0.1);
             if (state === 'off') {
               console.log('State off');
               return;
@@ -110,6 +115,7 @@ angular.module('starter.controllers', [])
               cooldownCountdown('cooldownTimer', 0, cooldownTime);
               setTimeout(function() {
                 // turn up volume
+                media.setVolume(0.9);
                 soundcloud.raiseVol();
                 cycle(amount - 1);
               }, cooldownTime * 1000 + 1000);
