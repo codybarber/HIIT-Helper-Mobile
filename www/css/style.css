@@ -1,0 +1,15 @@
+.home {
+  background-image: url(hiitTracks.png);
+}
+
+.entranceButton {
+  display: block;
+  font-size: 150px;
+  margin-left: 33%;
+  margin-top: 100%;
+}
+
+.spinner svg {
+  width: 150px;
+  height: 150px;
+}
