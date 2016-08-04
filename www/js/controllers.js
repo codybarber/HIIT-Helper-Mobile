@@ -1,5 +1,8 @@
 var state;
 var interval;
+
+
+
 angular.module('starter.controllers', [])
 
 .factory('soundcloud', function($http) {
@@ -30,6 +33,27 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope, soundcloud) {
   var amount = 0;
+
+  var slider = $('#slider').CircularSlider({
+      radius: 75,
+      innerCircleRatio: '0.5',
+      handleDist: 100,
+      min: 0,
+      max: 359,
+      value: 0,
+      clockwise: true,
+      labelSuffix: "",
+      labelPrefix: "",
+      shape: "Half Circle",
+      touch: true,
+      animate: true,
+      animateDuration : 360,
+      selectable: false,
+      slide: function(ui, value) {},
+      onSlideEnd: function(ui, value) {},
+      formLabel: undefined
+  });
+
     $('.intervals').submit(function(event) {
       event.preventDefault();
       state = 'on';
@@ -39,7 +63,7 @@ angular.module('starter.controllers', [])
       soundcloud.play();
     });
 
-    $('.stopVideo').click(function(event) {
+    $('.stopMusic').click(function(event) {
       event.preventDefault();
       state = 'off';
       document.getElementById('startButton').disabled = false;
@@ -48,7 +72,6 @@ angular.module('starter.controllers', [])
     });
 
     function workoutCountdown(element, minutes, seconds) {
-      document.getElementById('player').volume = 1.0;
       var time = minutes*60 + seconds;
       var interval = setInterval(function() {
         var el = document.getElementById(element);
@@ -57,6 +80,7 @@ angular.module('starter.controllers', [])
           clearInterval(interval);
           return;
         }
+        console.log("element: " + el);
         var minutes = Math.floor(Number( time / 60 ));
         if (minutes < 10) minutes = "0" + minutes;
         var seconds = time % 60;
@@ -68,7 +92,6 @@ angular.module('starter.controllers', [])
     }
 
     function cooldownCountdown(element, minutes, seconds) {
-      document.getElementById('player').volume = 0.2;
       var time = minutes*60 + seconds;
       var interval = setInterval(function() {
         var el = document.getElementById(element);
@@ -88,21 +111,27 @@ angular.module('starter.controllers', [])
     }
 
     function cycle(amount) {
-      if (amount <= 0) return;
+      if (amount <= 0) {
+        soundcloud.stop();
+        return;
+      }
       if (state === 'on') {
         document.getElementById('startButton').disabled = true;
-        var intervalTime = $('.exercise').val();
+        // var intervalTime = $('.exercise').val();
+        var intervalTime = $('.jcs-value').text();
+        console.log(intervalTime);
         intervalTime = Number(intervalTime);
         if (state === 'off') {
           console.log("State off");
           return;
         } else {
+          console.log(intervalTime);
           workoutCountdown('exerciseTimer', 0, intervalTime);
           var cooldownTime = $('.cooldown').val();
           cooldownTime = Number(cooldownTime);
           setTimeout(function() {
             // turn down volume
-            soundcloud.lowerVol();
+            // soundcloud.lowerVol();
             if (state === 'off') {
               console.log('State off');
               return;
@@ -110,7 +139,7 @@ angular.module('starter.controllers', [])
               cooldownCountdown('cooldownTimer', 0, cooldownTime);
               setTimeout(function() {
                 // turn up volume
-                soundcloud.raiseVol();
+                // soundcloud.raiseVol();
                 cycle(amount - 1);
               }, cooldownTime * 1000 + 1000);
             }
