@@ -45,7 +45,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     views: {
       'tab-details': {
         templateUrl: 'templates/tab-details.html',
-        controller: 'DashCtrl'
+        controller: 'WorkoutCtrl'
       }
     }
   })
@@ -55,7 +55,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       views: {
         'tab-workout': {
           templateUrl: 'templates/tab-workout.html',
-          controller: 'DashCtrl'
+          controller: 'WorkoutCtrl'
         }
       }
   });

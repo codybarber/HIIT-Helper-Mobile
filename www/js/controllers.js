@@ -1,6 +1,6 @@
 var state;
 var interval;
-
+var amount = 0;
 
 
 angular.module('starter.controllers', [])
@@ -31,28 +31,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('DashCtrl', function($scope, soundcloud) {
-  var amount = 0;
-
-  var slider = $('#slider').CircularSlider({
-      radius: 75,
-      innerCircleRatio: '0.5',
-      handleDist: 100,
-      min: 0,
-      max: 359,
-      value: 0,
-      clockwise: true,
-      labelSuffix: "",
-      labelPrefix: "",
-      shape: "Half Circle",
-      touch: true,
-      animate: true,
-      animateDuration : 360,
-      selectable: false,
-      slide: function(ui, value) {},
-      onSlideEnd: function(ui, value) {},
-      formLabel: undefined
-  });
+.controller('WorkoutCtrl', function($scope, soundcloud) {
 
     $('.intervals').submit(function(event) {
       event.preventDefault();
@@ -80,7 +59,6 @@ angular.module('starter.controllers', [])
           clearInterval(interval);
           return;
         }
-        console.log("element: " + el);
         var minutes = Math.floor(Number( time / 60 ));
         if (minutes < 10) minutes = "0" + minutes;
         var seconds = time % 60;
@@ -117,21 +95,19 @@ angular.module('starter.controllers', [])
       }
       if (state === 'on') {
         document.getElementById('startButton').disabled = true;
-        // var intervalTime = $('.exercise').val();
-        var intervalTime = $('.jcs-value').text();
-        console.log(intervalTime);
+        var intervalTime = $('.exercise').val();
         intervalTime = Number(intervalTime);
         if (state === 'off') {
           console.log("State off");
           return;
         } else {
-          console.log(intervalTime);
           workoutCountdown('exerciseTimer', 0, intervalTime);
           var cooldownTime = $('.cooldown').val();
           cooldownTime = Number(cooldownTime);
           setTimeout(function() {
             // turn down volume
             // soundcloud.lowerVol();
+            document.getElementById('cooldownAudio').play();
             if (state === 'off') {
               console.log('State off');
               return;
@@ -140,6 +116,7 @@ angular.module('starter.controllers', [])
               setTimeout(function() {
                 // turn up volume
                 // soundcloud.raiseVol();
+                document.getElementById('workoutAudio').play();
                 cycle(amount - 1);
               }, cooldownTime * 1000 + 1000);
             }
