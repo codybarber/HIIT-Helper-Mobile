@@ -59,7 +59,7 @@ angular.module('starter.controllers', [])
     var interval = setInterval(function() {
       var el = document.getElementById(element);
       if(time === 0) {
-        el.innerHTML = "Time for a break!";
+        el.innerHTML = "--:--";
         clearInterval(interval);
         return;
       }
@@ -78,7 +78,7 @@ angular.module('starter.controllers', [])
     var interval = setInterval(function() {
       var el = document.getElementById(element);
       if(time === 0) {
-        el.innerHTML = "Let's Go!";
+        el.innerHTML = "--:--";
         clearInterval(interval);
         return;
       }
